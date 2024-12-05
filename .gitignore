@@ -1,7 +1,6 @@
 Icon/
 node_modules/
-bepinex_dev/Libraries/
-bepinex_dev/SPTHardcoreRules/.vs
-bepinex_dev/SPTHardcoreRules/packages
-bepinex_dev/SPTHardcoreRules/bin
-bepinex_dev/SPTHardcoreRules/obj
+bepinex_dev/DansDevTools/.vs
+bepinex_dev/DansDevTools/packages
+bepinex_dev/DansDevTools/bin
+bepinex_dev/DansDevTools/obj
