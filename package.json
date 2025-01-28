@@ -1,12 +1,12 @@
 {
     "name": "DansDevTools",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "main": "src/mod.js",
     "license": "MIT",
     "author": "DanW",
     "sptVersion": ">=3.10.0 <3.11.0",
     "loadBefore": [],
-    "loadAfter": [],
+    "loadAfter": ["DanW-SPTQuestingBots"],
     "incompatibilities": [],
     "isBundleMod": false,
     "scripts": {

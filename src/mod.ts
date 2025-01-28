@@ -17,6 +17,7 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import type { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 
 import type { StaticRouterModService } from "@spt/services/mod/staticRouter/StaticRouterModService";
+import type { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
 
 const modName = "DansDevTools";
 
@@ -37,6 +38,7 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
     {
         this.logger = container.resolve<ILogger>("WinstonLogger");
         const staticRouterModService = container.resolve<StaticRouterModService>("StaticRouterModService");
+        const dynamicRouterModService = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         
         if (!modConfig.enabled)
         {
@@ -55,6 +57,18 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
                     return output;
                 }
             }], "aki"
+        );
+
+        // Can be used by other mods to check if the Questing Bots spawning system is active
+        dynamicRouterModService.registerDynamicRouter(`DynamicQuestingBotsSpawnSystemCheck${modName}`,
+            [{
+                url: "/QuestingBots/AdjustPMCConversionChances/",
+                action: async (output: string) => 
+                {
+                    this.commonUtils.logWarning("Questing Bots spawning system is active");
+                    return output;
+                }
+            }], "QuestingBotsSpawnSystemCheck"
         );
     }
 	

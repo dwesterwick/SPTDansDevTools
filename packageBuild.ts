@@ -55,7 +55,7 @@ fs.copySync(__dirname, path.normalize(`${__dirname}/../dist/~${modName}/user/mod
 {
     return !exclude.includes(filePath);
 }});
-fs.copySync(path.normalize(`${__dirname}/${csharpDevFolder}/${packageName}/bin/${csharpBuildFolder}/${packageName}.dll`), path.normalize(`${__dirname}/../dist/~${modName}/BepInEx/plugins/${packageName}.dll`));
+//fs.copySync(path.normalize(`${__dirname}/${csharpDevFolder}/${packageName}/bin/${csharpBuildFolder}/${packageName}.dll`), path.normalize(`${__dirname}/../dist/~${modName}/BepInEx/plugins/${packageName}.dll`));
 fs.moveSync(path.normalize(`${__dirname}/../dist/~${modName}`), path.normalize(`${__dirname}/dist/${modName}`), { overwrite: true });
 fs.copySync(path.normalize(`${__dirname}/dist/${modName}`), path.normalize(`${__dirname}/dist`));
 console.log("Build files copied.");
