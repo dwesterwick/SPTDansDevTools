@@ -20,6 +20,7 @@ import type { StaticRouterModService } from "@spt/services/mod/staticRouter/Stat
 import type { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
 
 const modName = "DansDevTools";
+const invalidMaps : string[] = ["base", "develop"];
 
 class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
 {
@@ -112,7 +113,6 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
         {
             this.commonUtils.logInfo("Forcing airdrops to occur at the beginning of every raid...");
 
-            const invalidMaps : string[] = ["base", "develop"];
             for (const map in this.databaseTables.locations)
             {
                 if (invalidMaps.includes(map))
@@ -130,6 +130,11 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
                 this.databaseTables.locations[map].base.AirdropParameters[0].PlaneAirdropStartMin = 5;
                 this.databaseTables.locations[map].base.AirdropParameters[0].PlaneAirdropStartMax = 10;
             }
+        }
+
+        if (modConfig.bosses_always_spawn)
+        {
+            this.makeBossesAlwaysSpawn();
         }
 
         if (modConfig.friendly_pmcs)
@@ -187,6 +192,29 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
         for (const map in this.iLocationConfig.scavRaidTimeSettings.maps)
         {
             this.iLocationConfig.scavRaidTimeSettings.maps[map].reducedChancePercent = 0;
+        }
+    }
+
+    private makeBossesAlwaysSpawn(): void
+    {
+        this.commonUtils.logInfo("Making bosses always spawn...");
+
+        for (const map in this.databaseTables.locations)
+        {
+            if (invalidMaps.includes(map))
+            {
+                continue;
+            }
+
+            if (this.databaseTables.locations[map].base.BossLocationSpawn === undefined)
+            {
+                continue;
+            }
+
+            for (const bossLocationSpawn in this.databaseTables.locations[map].base.BossLocationSpawn)
+            {
+                this.databaseTables.locations[map].base.BossLocationSpawn[bossLocationSpawn].BossChance = 100;
+            }
         }
     }
 }
