@@ -6,5 +6,12 @@
 	"full_length_scav_raids": false,
 	"always_have_airdrops": false,
 	"bosses_always_spawn": false,
-	"friendly_pmcs": false
+	"friendly_pmcs": false,
+	"halloween_2024_event": {
+		"override_settings": false,
+		"startDay": 1,
+		"startMonth": 1,
+		"endDay": 31,
+		"endMonth": 12
+	}
 }

@@ -15,6 +15,7 @@ import type { ProfileHelper } from "@spt/helpers/ProfileHelper";
 
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import type { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
+import type { ISeasonalEventConfig } from "@spt/models/spt/config/ISeasonalEventConfig";
 
 import type { StaticRouterModService } from "@spt/services/mod/staticRouter/StaticRouterModService";
 import type { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
@@ -34,6 +35,7 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
     private profileHelper: ProfileHelper;
 
     private iLocationConfig: ILocationConfig;
+    private iSeasonalEventConfig: ISeasonalEventConfig;
     
     public preSptLoad(container: DependencyContainer): void 
     {
@@ -82,6 +84,7 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
 		
         this.databaseTables = this.databaseServer.getTables();
         this.iLocationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
+        this.iSeasonalEventConfig = this.configServer.getConfig(ConfigTypes.SEASONAL_EVENT);
 		
         this.commonUtils = new CommonUtils(this.logger, this.databaseTables, this.localeService);
 		
@@ -111,25 +114,7 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
 
         if (modConfig.always_have_airdrops)
         {
-            this.commonUtils.logInfo("Forcing airdrops to occur at the beginning of every raid...");
-
-            for (const map in this.databaseTables.locations)
-            {
-                if (invalidMaps.includes(map))
-                {
-                    continue;
-                }
-
-                if (this.databaseTables.locations[map].base.AirdropParameters === undefined)
-                {
-                    continue;
-                }
-                
-                this.databaseTables.locations[map].base.AirdropParameters[0].MinPlayersCountToSpawnAirdrop = 1;
-                this.databaseTables.locations[map].base.AirdropParameters[0].PlaneAirdropChance = 1;
-                this.databaseTables.locations[map].base.AirdropParameters[0].PlaneAirdropStartMin = 5;
-                this.databaseTables.locations[map].base.AirdropParameters[0].PlaneAirdropStartMax = 10;
-            }
+            this.forceAirdropsWhenRaidsStart();
         }
 
         if (modConfig.bosses_always_spawn)
@@ -140,6 +125,11 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
         if (modConfig.friendly_pmcs)
         {
             this.commonUtils.logWarning("Friendly PMC's is not working!");
+        }
+
+        if (modConfig.halloween_2024_event.override_settings)
+        {
+            this.forceHalloween2024Event();
         }
     }
 	
@@ -215,6 +205,47 @@ class DansDevTools implements IPreSptLoadMod, IPostSptLoadMod, IPostDBLoadMod
             {
                 this.databaseTables.locations[map].base.BossLocationSpawn[bossLocationSpawn].BossChance = 100;
             }
+        }
+    }
+
+    private forceAirdropsWhenRaidsStart(): void
+    {
+        this.commonUtils.logInfo("Forcing airdrops to occur at the beginning of every raid...");
+
+        for (const map in this.databaseTables.locations)
+        {
+            if (invalidMaps.includes(map))
+            {
+                continue;
+            }
+
+            if (this.databaseTables.locations[map].base.AirdropParameters === undefined)
+            {
+                continue;
+            }
+            
+            this.databaseTables.locations[map].base.AirdropParameters[0].MinPlayersCountToSpawnAirdrop = 1;
+            this.databaseTables.locations[map].base.AirdropParameters[0].PlaneAirdropChance = 1;
+            this.databaseTables.locations[map].base.AirdropParameters[0].PlaneAirdropStartMin = 5;
+            this.databaseTables.locations[map].base.AirdropParameters[0].PlaneAirdropStartMax = 10;
+        }
+    }
+
+    private forceHalloween2024Event()
+    {
+        for (const event of this.iSeasonalEventConfig.events)
+        {
+            if (event.name !== "halloween")
+            {
+                continue;
+            }
+
+            this.commonUtils.logInfo("Forcing the Halloween 2024 event to always be active...");
+
+            event.startDay = modConfig.halloween_2024_event.startDay;
+            event.startMonth = modConfig.halloween_2024_event.startMonth;
+            event.endDay = modConfig.halloween_2024_event.endDay;
+            event.endMonth = modConfig.halloween_2024_event.endMonth;
         }
     }
 }
