@@ -26,4 +26,6 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
+  <Import Project="..\Shared\DansDevTools-Shared.projitems" Label="Shared" />
 </Project>

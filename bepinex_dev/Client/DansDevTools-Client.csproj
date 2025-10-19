@@ -86,5 +86,6 @@
   <ItemGroup>
     <Folder Include="Patches\" />
   </ItemGroup>
+  <Import Project="..\Shared\DansDevTools-Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DansDevTools-Client", "Clie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DansDevTools-Server", "Server\DansDevTools-Server.csproj", "{340B90A2-D164-444F-9844-5D7E96582ED5}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DansDevTools-Shared", "Shared\DansDevTools-Shared.shproj", "{17FBDD37-7C10-4306-B936-4B32DBFE74BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4AFC7064-86A0-410B-8A07-D1516283D3EB}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shared\DansDevTools-Shared.projitems*{17fbdd37-7c10-4306-b936-4b32dbfe74bc}*SharedItemsImports = 13
+		Shared\DansDevTools-Shared.projitems*{340b90a2-d164-444f-9844-5d7e96582ed5}*SharedItemsImports = 5
+		Shared\DansDevTools-Shared.projitems*{3bc4b546-5584-4d60-853b-cad3681ee12e}*SharedItemsImports = 4
 	EndGlobalSection
 EndGlobal

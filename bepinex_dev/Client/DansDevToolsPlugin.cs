@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using DansDevTools.Helpers;
+using DansDevTools_Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DansDevTools
 {
-    [BepInPlugin("com.danw.dansdevtools", "DansDevTools", "1.1.0")]
+    [BepInPlugin(ModInfo.GUID, ModInfo.MODNAME, ModInfo.MODVERSION)]
     public class DansDevToolsPlugin : BaseUnityPlugin
     {
         protected void Awake()
