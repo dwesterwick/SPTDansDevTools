@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DansDevTools
 {
-    [BepInPlugin("com.DanW.DansDevTools", "DansDevTools", "1.0.0")]
+    [BepInPlugin("com.danw.dansdevtools", "DansDevTools", "1.1.0")]
     public class DansDevToolsPlugin : BaseUnityPlugin
     {
         protected void Awake()
