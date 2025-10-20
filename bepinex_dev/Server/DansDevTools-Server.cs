@@ -1,5 +1,4 @@
 using DansDevTools.Helpers;
-using DansDevTools_Shared;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Spt.Mod;
@@ -18,7 +17,7 @@ public record ModMetadata : AbstractModMetadata
     public override Dictionary<string, SemanticVersioning.Range>? ModDependencies { get; init; }
     public override string? Url { get; init; }
     public override bool? IsBundleMod { get; init; } = false;
-    public override string? License { get; init; } = "MIT";
+    public override string License { get; init; } = "MIT";
 }
 
 [Injectable(TypePriority = OnLoadOrder.PreSptModLoader + 1)]
@@ -28,6 +27,7 @@ public class DansDevToolsServer(
 {
     public Task OnLoad()
     {
+        
         logger.Info("test");
 
         return Task.CompletedTask;

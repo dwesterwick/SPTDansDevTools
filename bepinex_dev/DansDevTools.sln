@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DansDevTools-Server", "Serv
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DansDevTools-Shared", "Shared\DansDevTools-Shared.shproj", "{17FBDD37-7C10-4306-B936-4B32DBFE74BC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

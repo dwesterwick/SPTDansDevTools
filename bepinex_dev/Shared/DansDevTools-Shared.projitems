@@ -6,7 +6,7 @@
     <SharedGUID>17fbdd37-7c10-4306-b936-4b32dbfe74bc</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>DansDevTools_Shared</Import_RootNamespace>
+    <Import_RootNamespace>DansDevTools</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)Config\config.json" />

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 //using System.Text.Json.Serialization;
 
-namespace DansDevTools_Shared.Configuration
+namespace DansDevTools.Configuration
 {
     public class ModConfig
     {

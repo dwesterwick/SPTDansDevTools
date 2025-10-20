@@ -4,7 +4,7 @@ using SPTarkov.Server.Core.Models.Utils;
 namespace DansDevTools.Helpers
 {
     [Injectable(InjectionType.Singleton)]
-    public class LoggingUtil( ISptLogger<DansDevToolsServer> logger)
+    public class LoggingUtil(ISptLogger<DansDevToolsServer> logger)
     {
         public void Info(string message)
         {

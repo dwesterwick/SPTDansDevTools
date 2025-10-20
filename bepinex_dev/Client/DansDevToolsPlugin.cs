@@ -1,6 +1,5 @@
 ﻿using BepInEx;
 using DansDevTools.Helpers;
-using DansDevTools_Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
