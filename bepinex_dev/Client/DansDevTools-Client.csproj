@@ -4,9 +4,12 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>DansDevTools</RootNamespace>
     <Nullable>enable</Nullable>
-    <Version></Version>
-    <AssemblyVersion />
-    <FileVersion />
+    <Version>$(Version)</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/dwesterwick/SPTDansDevTools</RepositoryUrl>
+    <Authors>$(Authors)</Authors>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -51,6 +54,12 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Patches\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="..\Shared\LICENSE.txt">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 	<Import Project="..\Shared\DansDevTools-Shared.projitems" Label="Shared" />
 

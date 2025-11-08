@@ -11,6 +11,10 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <RepositoryUrl>https://github.com/dwesterwick/SPTDansDevTools</RepositoryUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
+    <Version>$(Version)</Version>
+    <Authors>$(Authors)</Authors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,16 +23,13 @@
     <PackageReference Include="SPTarkov.Server.Core" Version="4.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="LICENSE.txt">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
   <Import Project="..\Shared\DansDevTools-Shared.projitems" Label="Shared" />
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)PostBuildScript.ps1&quot; -modName &quot;$(AssemblyProduct)&quot; -modVersion &quot;$(Version)&quot;" />
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)..\Shared\PostBuildScript.ps1&quot; -modName &quot;$(AssemblyTitle)&quot; -modVersion &quot;$(Version)&quot;" />
+  </Target>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)..\Shared\PreBuildScript.ps1&quot; -modVersion &quot;$(Version)&quot;" />
   </Target>
 </Project>

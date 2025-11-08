@@ -15,4 +15,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\ModConfig.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)LICENSE.txt">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)PostBuildScript.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)PreBuildScript.ps1" />
+  </ItemGroup>
 </Project>
