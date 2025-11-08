@@ -1,22 +1,27 @@
 ﻿namespace DansDevTools.Helpers
 {
-    public static class LoggingUtil
+    public class LoggingUtil
     {
-        public static BepInEx.Logging.ManualLogSource Logger { get; set; } = null;
+        private BepInEx.Logging.ManualLogSource _logger;
 
-        public static void LogInfo(string message)
+        public LoggingUtil(BepInEx.Logging.ManualLogSource logger)
         {
-            Logger.LogInfo(message);
+            _logger = logger;
         }
 
-        public static void LogWarning(string message)
+        public void LogInfo(string message)
         {
-            Logger.LogWarning(message);
+            _logger.LogInfo(message);
         }
 
-        public static void LogError(string message)
+        public void LogWarning(string message)
         {
-            Logger.LogError(message);
+            _logger.LogWarning(message);
+        }
+
+        public void LogError(string message)
+        {
+            _logger.LogError(message);
         }
     }
 }

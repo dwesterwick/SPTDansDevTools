@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DansDevTools-Client", "Client\DansDevTools-Client.csproj", "{3BC4B546-5584-4D60-853B-CAD3681EE12E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DansDevTools-Server", "Server\DansDevTools-Server.csproj", "{340B90A2-D164-444F-9844-5D7E96582ED5}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DansDevTools-Shared", "Shared\DansDevTools-Shared.shproj", "{17FBDD37-7C10-4306-B936-4B32DBFE74BC}"
@@ -14,20 +12,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DansDevTools-Client", "Client\DansDevTools-Client.csproj", "{CEB2AEED-E040-0CD6-8933-13718A1C35BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3BC4B546-5584-4D60-853B-CAD3681EE12E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BC4B546-5584-4D60-853B-CAD3681EE12E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BC4B546-5584-4D60-853B-CAD3681EE12E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BC4B546-5584-4D60-853B-CAD3681EE12E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{340B90A2-D164-444F-9844-5D7E96582ED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{340B90A2-D164-444F-9844-5D7E96582ED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{340B90A2-D164-444F-9844-5D7E96582ED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{340B90A2-D164-444F-9844-5D7E96582ED5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB2AEED-E040-0CD6-8933-13718A1C35BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB2AEED-E040-0CD6-8933-13718A1C35BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB2AEED-E040-0CD6-8933-13718A1C35BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB2AEED-E040-0CD6-8933-13718A1C35BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,6 +38,6 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Shared\DansDevTools-Shared.projitems*{17fbdd37-7c10-4306-b936-4b32dbfe74bc}*SharedItemsImports = 13
 		Shared\DansDevTools-Shared.projitems*{340b90a2-d164-444f-9844-5d7e96582ed5}*SharedItemsImports = 5
-		Shared\DansDevTools-Shared.projitems*{3bc4b546-5584-4d60-853b-cad3681ee12e}*SharedItemsImports = 4
+		Shared\DansDevTools-Shared.projitems*{ceb2aeed-e040-0cd6-8933-13718a1c35be}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

@@ -1,5 +1,4 @@
 ﻿using BepInEx;
-using Comfort.Common;
 using DansDevTools.Helpers;
 using System;
 using System.Collections.Generic;
@@ -16,14 +15,15 @@ namespace DansDevTools
         {
             Logger.LogInfo("Loading DansDevTools...");
 
-            Singleton<LoggingUtil>.Create(new LoggingUtil(Logger));
+            LoggingUtil.Logger = Logger;
 
+            ConfigUtil.GetConfig();
             if (ConfigUtil.Config.Enabled)
             {
-                Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...enabled");
+                Logger.LogInfo("Loading DansDevTools...enabled");
             }
 
-            Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...done.");
+            Logger.LogInfo("Loading DansDevTools...done.");
         }
     }
 }

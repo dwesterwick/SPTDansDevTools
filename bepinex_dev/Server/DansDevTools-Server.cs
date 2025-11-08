@@ -21,14 +21,22 @@ public record ModMetadata : AbstractModMetadata
 }
 
 [Injectable(TypePriority = OnLoadOrder.PreSptModLoader + 1)]
-public class DansDevToolsServer(
-    LoggingUtil logger)
-    : IOnLoad
+public class DansDevToolsServer : IOnLoad
 {
+    private readonly LoggingUtil _logger;
+    private readonly ConfigUtil _config;
+
+    public DansDevToolsServer(LoggingUtil logger, ConfigUtil config)
+    {
+        _logger = logger;
+        _config = config;
+    }
+
     public Task OnLoad()
     {
-        
-        logger.Info("test");
+        _logger.Info("test");
+
+        _logger.Info($"Mod enabled: {_config.Config.Enabled}");
 
         return Task.CompletedTask;
     }
