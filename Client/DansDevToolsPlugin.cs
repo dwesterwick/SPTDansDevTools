@@ -28,11 +28,12 @@ namespace DansDevTools
             {
                 Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...enabled");
 
+                new BotsControllerSetSettingsPatch().Enable();
+                new GodModePatch().Enable();
+
                 if (ConfigUtil.CurrentConfig.FreeLabyrinthAccess)
                 {
                     new LabyrinthScavExfilPatch().Enable();
-                    new BotsControllerSetSettingsPatch().Enable();
-                    new GodModePatch().Enable();
                 }
 
                 AddConfigOptions(Config);
