@@ -4,12 +4,13 @@ using SPTarkov.Server.Core.Utils;
 
 namespace DansDevTools.Routers.Template;
 
-public abstract class AbstractStaticRouter<TResult> : StaticRouter
+public abstract class AbstractStaticRouter : StaticRouter
 {
     protected static LoggingUtil Logger { get; private set; } = null!;
     protected static ConfigUtil Config { get; private set; } = null!;
+    protected static JsonUtil JsonUtil { get; private set; } = null!;
 
-    private static readonly Dictionary<string, AbstractStaticRouter<TResult>> _registeredRoutes = new();
+    private static readonly Dictionary<string, AbstractStaticRouter> _registeredRoutes = new();
 
     private readonly Dictionary<string, RouteAction> _routeActions = new();
 
@@ -17,11 +18,12 @@ public abstract class AbstractStaticRouter<TResult> : StaticRouter
     {
         Logger = logger;
         Config = config;
+        JsonUtil = jsonUtil;
 
         RegisterRoutes(_routeNames, this);
     }
 
-    private static void RegisterRoutes(IEnumerable<string> routeNames, AbstractStaticRouter<TResult> instance)
+    private static void RegisterRoutes(IEnumerable<string> routeNames, AbstractStaticRouter instance)
     {
         foreach (string routeName in routeNames)
         {
@@ -43,7 +45,7 @@ public abstract class AbstractStaticRouter<TResult> : StaticRouter
 
         foreach (string _routeName in routeNames)
         {
-            if (!_registeredRoutes.TryGetValue(_routeName, out AbstractStaticRouter<TResult>? instance) || instance == null)
+            if (!_registeredRoutes.TryGetValue(_routeName, out AbstractStaticRouter? instance) || instance == null)
             {
                 throw new InvalidOperationException($"Cannot retrieve route for \"{_routeName}\"");
             }
@@ -52,7 +54,7 @@ public abstract class AbstractStaticRouter<TResult> : StaticRouter
         }
     }
 
-    protected abstract ValueTask<TResult> HandleRoute(string routeName, RouterData routerData);
+    protected abstract ValueTask<string?> HandleRoute(string routeName, RouterData routerData);
 
     private RouteAction GetRouteAction(string routeName)
     {
@@ -74,7 +76,7 @@ public abstract class AbstractStaticRouter<TResult> : StaticRouter
 
     private RouteAction CreateRouteAction(string routeName)
     {
-        string routePath = RouterHelpers.GetRoutePath(routeName);
+        string routePath = SharedRouterHelpers.GetRoutePath(routeName);
         Logger.Info("Creating route: " + routePath);
 
         RouteAction routeAction = new RouteAction(routePath, async (url, info, sessionId, output) =>

@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using Comfort.Common;
 using DansDevTools.Helpers;
+using DansDevTools.Patches;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,12 @@ namespace DansDevTools
             if (ConfigUtil.CurrentConfig.Enabled)
             {
                 Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...enabled");
+
+                if (ConfigUtil.CurrentConfig.FreeLabyrinthAccess)
+                {
+                    new LabyrinthScavExfilPatch().Enable();
+                    Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...created Scav exfils for Labyrinth...");
+                }
             }
 
             Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...done.");

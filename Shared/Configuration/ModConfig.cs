@@ -6,7 +6,7 @@ namespace DansDevTools.Configuration
     public class ModConfig
     {
         [DataMember(Name = "enabled")]
-        public bool Enabled { get; set; } = true;
+        public bool Enabled { get; set; } = false;
 
         [DataMember(Name = "scav_cooldown_time")]
         public int ScavCooldownTime { get; set; } = 1500;

@@ -27,7 +27,7 @@ namespace DansDevTools.Helpers
 
         private static void GetConfig()
         {
-            string routeName = RouterHelpers.GetRoutePath("GetConfig");
+            string routeName = SharedRouterHelpers.GetRoutePath("GetConfig");
             string json = RequestHandler.GetJson(routeName);
             Configuration.ModConfig? config = JsonConvert.DeserializeObject<Configuration.ModConfig>(json);
 

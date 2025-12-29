@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DansDevTools.Helpers
 {
-    public static class RouterHelpers
+    public static class SharedRouterHelpers
     {
         public static string GetRoutePath(string routeName)
         {
