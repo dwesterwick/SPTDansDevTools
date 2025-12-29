@@ -12,7 +12,13 @@ public class ModifyDatabaseService : AbstractService
 {
     private DatabaseService _databaseService;
 
-    public ModifyDatabaseService(LoggingUtil logger, ConfigUtil config, DatabaseService databaseService) : base(logger, config)
+    public ModifyDatabaseService
+    (
+        LoggingUtil logger,
+        ConfigUtil config,
+        DatabaseService databaseService,
+        RaidTimeAdjustmentService raidTimeAdjustmentService
+    ) : base(logger, config)
     {
         _databaseService = databaseService;
     }

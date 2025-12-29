@@ -22,6 +22,11 @@ public class ModifySPTConfigService : AbstractService
     {
         GetAllConfigs();
 
+        if (Config.CurrentConfig.FreeLabyrinthAccess)
+        {
+            AddLabyrinthToRaidTimeAdjustments();
+        }
+
         if (Config.CurrentConfig.FullLengthScavRaids)
         {
             ForceFullLengthScavRaids();
@@ -31,6 +36,20 @@ public class ModifySPTConfigService : AbstractService
     private void GetAllConfigs()
     {
         _locationConfig = _configServer.GetConfig<LocationConfig>();
+    }
+
+    private void AddLabyrinthToRaidTimeAdjustments()
+    {
+        ScavRaidTimeLocationSettings? labsSettings = _locationConfig.ScavRaidTimeSettings.Maps["laboratory"];
+        if (labsSettings == null)
+        {
+            throw new InvalidOperationException("Could not retrieve scav raid-time adjustment settings for Labs");
+        }
+
+        ScavRaidTimeLocationSettings labyrinthSettings = labsSettings.Clone();
+        _locationConfig.ScavRaidTimeSettings.Maps.Add("labyrinth", labyrinthSettings);
+
+        Logger.Info("Added Scav raid-time adjustment settings for Labyrinth");
     }
 
     private void ForceFullLengthScavRaids()
