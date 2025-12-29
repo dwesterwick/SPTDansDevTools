@@ -8,7 +8,7 @@ public abstract class AbstractService : IOnLoad
     protected static LoggingUtil Logger { get; private set; } = null!;
     protected static ConfigUtil Config { get; private set; } = null!;
 
-    private static bool _disabledMessageLogged = false;
+    private static bool _modDisabledMessageLogged = false;
 
     public AbstractService(LoggingUtil logger, ConfigUtil config)
     {
@@ -24,7 +24,7 @@ public abstract class AbstractService : IOnLoad
         }
         else
         {
-            LogDisabledMessage();
+            LogModDisabledMessage();
         }
 
         return Task.CompletedTask;
@@ -32,15 +32,15 @@ public abstract class AbstractService : IOnLoad
 
     protected abstract void OnLoadIfEnabled();
 
-    private void LogDisabledMessage()
+    private void LogModDisabledMessage()
     {
-        if (_disabledMessageLogged)
+        if (_modDisabledMessageLogged)
         {
             return;
         }
 
         Logger.Info(ModInfo.MODNAME + " is disabled.");
 
-        _disabledMessageLogged = true;
+        _modDisabledMessageLogged = true;
     }
 }

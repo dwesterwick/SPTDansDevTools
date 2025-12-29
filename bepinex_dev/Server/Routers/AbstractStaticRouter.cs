@@ -1,7 +1,5 @@
 ﻿using DansDevTools.Helpers;
 using SPTarkov.Server.Core.DI;
-using SPTarkov.Server.Core.Models.Common;
-using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Utils;
 
 namespace DansDevTools.Routers;
@@ -11,43 +9,77 @@ public abstract class AbstractStaticRouter<TResult> : StaticRouter
     protected static LoggingUtil Logger { get; private set; } = null!;
     protected static ConfigUtil Config { get; private set; } = null!;
 
-    private static string _routePath = null!;
-    private static RouteAction _routeAction = null!;
-    private static AbstractStaticRouter<TResult> _instace = null!;
+    private static readonly Dictionary<string, AbstractStaticRouter<TResult>> _registeredRoutes = new();
 
-    public AbstractStaticRouter(string _routeName, LoggingUtil logger, ConfigUtil config, JsonUtil jsonUtil) : base(jsonUtil, GetCustomRoutes())
+    private readonly Dictionary<string, RouteAction> _routeActions = new();
+
+    public AbstractStaticRouter(IEnumerable<string> _routeNames, LoggingUtil logger, ConfigUtil config, JsonUtil jsonUtil) : base(jsonUtil, GetRoutes(_routeNames))
     {
-        _instace = this;
         Logger = logger;
         Config = config;
 
-        _routePath = RouterHelpers.GetRoutePath(_routeName);
+        RegisterRoutes(_routeNames, this);
     }
 
-    private static IEnumerable<RouteAction> GetCustomRoutes()
+    private static void RegisterRoutes(IEnumerable<string> routeNames, AbstractStaticRouter<TResult> instance)
+    {
+        foreach (string routeName in routeNames)
+        {
+            if (_registeredRoutes.ContainsKey(routeName))
+            {
+                throw new InvalidOperationException($"Route \"{routeNames}\" is already registered");
+            }
+
+            _registeredRoutes.Add(routeName, instance);
+        }
+    }
+
+    private static IEnumerable<RouteAction> GetRoutes(IEnumerable<string> routeNames)
     {
         if (!Config.CurrentConfig.Enabled)
         {
             yield break;
         }
 
-        yield return GetRouteAction();
+        foreach (string _routeName in routeNames)
+        {
+            if (!_registeredRoutes.TryGetValue(_routeName, out AbstractStaticRouter<TResult>? instance) || (instance == null))
+            {
+                throw new InvalidOperationException($"Cannot retrieve route for \"{_routeName}\"");
+            }
+
+            yield return instance.GetRouteAction(_routeName);
+        }
     }
 
-    protected abstract ValueTask<TResult> HandleRoute(string url, IRequestData info, MongoId sessionId, string? output);
+    protected abstract ValueTask<TResult> HandleRoute(string routeName, RouterData routerData);
 
-    private static RouteAction GetRouteAction()
+    private RouteAction GetRouteAction(string routeName)
     {
-        if (_routeAction != null)
+        if (_routeActions.TryGetValue(routeName, out RouteAction? routeAction))
         {
-            return _routeAction;
+            if (routeAction == null)
+            {
+                throw new InvalidOperationException($"RouteAction for \"{routeName}\" is null");
+            }
+
+            return routeAction;
         }
 
-        Logger.Info("Creating route: " + _routePath);
+        routeAction = CreateRouteAction(routeName);
+        _routeActions.Add(routeName, routeAction);
 
-        _routeAction = new RouteAction(_routePath, async (url, info, sessionId, output) =>
-                    await _instace.HandleRoute(url, info, sessionId, output) ?? throw new InvalidOperationException("HandleRoute returned null"));
+        return routeAction;
+    }
 
-        return _routeAction;
+    private RouteAction CreateRouteAction(string routeName)
+    {
+        string routePath = RouterHelpers.GetRoutePath(routeName);
+        Logger.Info("Creating route: " + routePath);
+
+        RouteAction routeAction = new RouteAction(routePath, async (url, info, sessionId, output) =>
+                    await HandleRoute(routeName, new RouterData(url, info, sessionId, output)) ?? throw new InvalidOperationException("HandleRoute returned null"));
+
+        return routeAction;
     }
 }
