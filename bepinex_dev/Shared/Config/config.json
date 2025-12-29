@@ -2,6 +2,7 @@
 	"enabled": false,
 	"scav_cooldown_time": 1500,
 	"free_labs_access": false,
+	"free_labyrinth_access": false,
 	"min_level_for_flea": 15,
 	"full_length_scav_raids": false,
 	"always_have_airdrops": false,

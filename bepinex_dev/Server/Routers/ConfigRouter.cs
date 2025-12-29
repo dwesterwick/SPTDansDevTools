@@ -1,37 +1,25 @@
 ﻿using DansDevTools.Configuration;
 using DansDevTools.Helpers;
 using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Common;
+using SPTarkov.Server.Core.Models.Utils;
 using SPTarkov.Server.Core.Utils;
 
 namespace DansDevTools.Routers
 {
     [Injectable]
-    public class ConfigRouter : StaticRouter
+    public class ConfigRouter : AbstractStaticRouter<ModConfig>
     {
-        private static ConfigUtil? _config;
+        private static readonly string _routeName = "GetConfig";
 
-        public ConfigRouter(ConfigUtil config, JsonUtil jsonUtil) : base(jsonUtil, GetCustomRoutes())
+        public ConfigRouter(LoggingUtil logger, ConfigUtil config, JsonUtil jsonUtil) : base(_routeName, logger, config, jsonUtil)
         {
-            _config = config;
+            
         }
 
-        private static List<RouteAction> GetCustomRoutes()
+        protected override ValueTask<ModConfig> HandleRoute(string url, IRequestData info, MongoId sessionId, string? output)
         {
-            return
-            [
-                new RouteAction("/DansDevTools/GetConfig", async (url, info, sessionId, output) => await HandleRoute())
-            ];
-        }
-
-        private static ValueTask<ModConfig> HandleRoute()
-        {
-            if (_config == null)
-            {
-                throw new InvalidOperationException("ConfigUtil is not initialized.");
-            }
-
-            return new ValueTask<ModConfig>(_config.Config);
+            return new ValueTask<ModConfig>(Config.CurrentConfig);
         }
     }
 }

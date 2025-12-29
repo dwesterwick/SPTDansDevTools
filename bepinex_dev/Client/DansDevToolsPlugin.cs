@@ -18,7 +18,7 @@ namespace DansDevTools
 
             Singleton<LoggingUtil>.Create(new LoggingUtil(Logger));
 
-            if (ConfigUtil.Config.Enabled)
+            if (ConfigUtil.CurrentConfig.Enabled)
             {
                 Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...enabled");
             }

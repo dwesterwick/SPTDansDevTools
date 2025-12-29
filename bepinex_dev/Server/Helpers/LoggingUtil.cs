@@ -4,21 +4,31 @@ using SPTarkov.Server.Core.Models.Utils;
 namespace DansDevTools.Helpers
 {
     [Injectable(InjectionType.Singleton)]
-    public class LoggingUtil(ISptLogger<DansDevToolsServer> logger)
+    public class LoggingUtil(ISptLogger<DansDevTools_Server> logger)
     {
+        public void Debug(string message)
+        {
+            logger.Debug(GetLogPrefix() + message);
+        }
+
         public void Info(string message)
         {
-            logger.Info(message);
+            logger.Info(GetLogPrefix() + message);
         }
 
         public void Warning(string message)
         {
-            logger.Warning(message);
+            logger.Warning(GetLogPrefix() + message);
         }
 
         public void Error(string message)
         {
-            logger.Error(message);
+            logger.Error(GetLogPrefix() + message);
+        }
+
+        private string GetLogPrefix()
+        {
+            return $"[{ModInfo.MODNAME}] ";
         }
     }
 }

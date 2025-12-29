@@ -11,13 +11,13 @@ namespace DansDevTools.Helpers
     {
         const string FILENAME = "config.json";
 
-        public ModConfig Config { get; private set; }
+        public ModConfig CurrentConfig { get; private set; }
 
         public ConfigUtil(ModHelper modHelper)
         {
             string pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
             string fileText = File.ReadAllText(Path.Combine(pathToMod, FILENAME));
-            Config = Deserialize(fileText);
+            CurrentConfig = Deserialize(fileText);
         }
 
         public static string Serialize(ModConfig config)

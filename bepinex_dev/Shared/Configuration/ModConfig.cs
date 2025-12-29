@@ -14,6 +14,9 @@ namespace DansDevTools.Configuration
         [DataMember(Name = "free_labs_access")]
         public bool FreeLabsAccess { get; set; } = false;
 
+        [DataMember(Name = "free_labyrinth_access")]
+        public bool FreeLabyrinthAccess { get; set; } = false;
+
         [DataMember(Name = "min_level_for_flea")]
         public int MinLevelForFlea { get; set; } = 15;
 

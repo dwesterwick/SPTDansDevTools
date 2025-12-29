@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DansDevTools-Client", "Client\DansDevTools-Client.csproj", "{CEB2AEED-E040-0CD6-8933-13718A1C35BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DansDevTools-Tests", "Tests\DansDevTools-Tests.csproj", "{5C264016-E28C-0280-716B-DAA2DE535658}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{CEB2AEED-E040-0CD6-8933-13718A1C35BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEB2AEED-E040-0CD6-8933-13718A1C35BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEB2AEED-E040-0CD6-8933-13718A1C35BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C264016-E28C-0280-716B-DAA2DE535658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C264016-E28C-0280-716B-DAA2DE535658}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C264016-E28C-0280-716B-DAA2DE535658}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C264016-E28C-0280-716B-DAA2DE535658}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

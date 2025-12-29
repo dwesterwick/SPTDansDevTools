@@ -10,7 +10,7 @@ namespace DansDevTools.Helpers
 {
     public static class ConfigUtil
     {
-        public static Configuration.ModConfig Config
+        public static Configuration.ModConfig CurrentConfig
         {
             get
             {
@@ -27,7 +27,8 @@ namespace DansDevTools.Helpers
 
         private static void GetConfig()
         {
-            string json = RequestHandler.GetJson("/DansDevTools/GetConfig");
+            string routeName = RouterHelpers.GetRoutePath("GetConfig");
+            string json = RequestHandler.GetJson(routeName);
             Configuration.ModConfig? config = JsonConvert.DeserializeObject<Configuration.ModConfig>(json);
 
             if (config == null)
