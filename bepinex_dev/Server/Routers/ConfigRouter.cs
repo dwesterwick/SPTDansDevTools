@@ -1,5 +1,6 @@
 ﻿using DansDevTools.Configuration;
 using DansDevTools.Helpers;
+using DansDevTools.Routers.Template;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Utils;
 

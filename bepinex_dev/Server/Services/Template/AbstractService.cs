@@ -1,7 +1,7 @@
 ﻿using DansDevTools.Helpers;
 using SPTarkov.Server.Core.DI;
 
-namespace DansDevTools.Services;
+namespace DansDevTools.Services.Template;
 
 public abstract class AbstractService : IOnLoad
 {

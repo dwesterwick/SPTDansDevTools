@@ -30,6 +30,6 @@
   </Target>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)..\Shared\PreBuildScript.ps1&quot; -modVersion &quot;$(Version)&quot;" />
+    <Exec Command="powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;$(ProjectDir)..\Shared\PreBuildScript.ps1&quot; -guid &quot;$(SPTGUID)&quot; -modName &quot;$(AssemblyTitle)&quot; -author &quot;$(Authors)&quot; -modVersion &quot;$(Version)&quot; -sptVersion &quot;$(SPTVersion)&quot;" />
   </Target>
 </Project>

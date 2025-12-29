@@ -15,5 +15,15 @@ namespace DansDevTools.Helpers
 
             return location;
         }
+
+        public static IEnumerable<Location> EnumerateLocations(this DatabaseService databaseService)
+        {
+            return databaseService.GetLocations().GetDictionary().Values;
+        }
+
+        public static IEnumerable<string> EnumerateLocationNames(this DatabaseService databaseService)
+        {
+            return databaseService.GetLocations().GetDictionary().Keys;
+        }
     }
 }

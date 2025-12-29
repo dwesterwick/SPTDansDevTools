@@ -8,7 +8,12 @@ namespace DansDevTools.Helpers
     {
         public static string GetRoutePath(string routeName)
         {
-            return "/" + ModInfo.MODNAME + "/" + routeName;
+            if (routeName.Contains("/"))
+            {
+                return routeName;
+            }
+
+            return $"/{ModInfo.MODNAME}/{routeName}";
         }
     }
 }

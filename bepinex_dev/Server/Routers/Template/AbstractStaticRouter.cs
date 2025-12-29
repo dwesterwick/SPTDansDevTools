@@ -2,7 +2,7 @@
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Utils;
 
-namespace DansDevTools.Routers;
+namespace DansDevTools.Routers.Template;
 
 public abstract class AbstractStaticRouter<TResult> : StaticRouter
 {
@@ -43,7 +43,7 @@ public abstract class AbstractStaticRouter<TResult> : StaticRouter
 
         foreach (string _routeName in routeNames)
         {
-            if (!_registeredRoutes.TryGetValue(_routeName, out AbstractStaticRouter<TResult>? instance) || (instance == null))
+            if (!_registeredRoutes.TryGetValue(_routeName, out AbstractStaticRouter<TResult>? instance) || instance == null)
             {
                 throw new InvalidOperationException($"Cannot retrieve route for \"{_routeName}\"");
             }
