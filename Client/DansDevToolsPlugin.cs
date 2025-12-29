@@ -1,4 +1,5 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using Comfort.Common;
 using DansDevTools.Helpers;
 using DansDevTools.Patches;
@@ -13,6 +14,10 @@ namespace DansDevTools
     [BepInPlugin(ModInfo.GUID, ModInfo.MODNAME, ModInfo.MODVERSION)]
     public class DansDevToolsPlugin : BaseUnityPlugin
     {
+        public static ConfigEntry<bool> GodMode = null!;
+        public static ConfigEntry<bool> InfiniteStamina = null!;
+        public static ConfigEntry<bool> InfiniteHydrationAndEnergy = null!;
+
         protected void Awake()
         {
             Logger.LogInfo("Loading DansDevTools...");
@@ -26,11 +31,21 @@ namespace DansDevTools
                 if (ConfigUtil.CurrentConfig.FreeLabyrinthAccess)
                 {
                     new LabyrinthScavExfilPatch().Enable();
-                    Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...created Scav exfils for Labyrinth...");
+                    new BotsControllerSetSettingsPatch().Enable();
+                    new GodModePatch().Enable();
                 }
+
+                AddConfigOptions(Config);
             }
 
             Singleton<LoggingUtil>.Instance.LogInfo("Loading DansDevTools...done.");
+        }
+
+        private void AddConfigOptions(ConfigFile Config)
+        {
+            GodMode = Config.Bind("Cheats", "God Mode", false, "Ignores all damage");
+            InfiniteStamina = Config.Bind("Cheats", "Infinite Stamina", false, "Infinite stamina");
+            InfiniteHydrationAndEnergy = Config.Bind("Cheats", "Infinite Hydration and Energy", false, "No hydration or energy loss during raids");
         }
     }
 }
