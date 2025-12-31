@@ -13,15 +13,31 @@ $modInfoAbsolutePath = Join-Path $PSScriptRoot $modInfoRelativePath
 
 Write-Host ('Updating {0}...' -f $modInfoAbsolutePath)
 
+# Create a Mutex object to ensure another project is not already trying to update ModInfo.cs
+$mutexName = "Global\ModInfoFileMutex"
+$mutex = New-Object System.Threading.Mutex($false, $mutexName)
+$mutexTimeoutMs = 5000
+
 # Read the original file contents
 try
 {
-    $originalContent = Get-Content -Path $modInfoAbsolutePath -Raw -errorAction stop
+    If ($mutex.WaitOne($mutexTimeoutMs))
+    {
+        $originalContent = Get-Content -Path $modInfoAbsolutePath -Raw -errorAction stop
+    }
+    Else
+    {
+        throw ('Could not acquire {0} Mutex within {1} ms.' -f $mutexName, $mutexTimeoutMs)
+    }
 }
 catch
 {
     Write-Error ('Could not read file {0}: {1}' -f $modInfoAbsolutePath, $_.Exception.Message)
     exit 1
+}
+finally
+{
+    [void]$mutex.ReleaseMutex()
 }
 
 $updatedContent = $originalContent
@@ -37,12 +53,25 @@ $updatedContent = $updatedContent.Trim() -replace 'SPTVERSIONCOMPATIBILITY = ".*
 # Write modified contents back to the file
 try
 {
-    $updatedContent | Out-File -FilePath $modInfoAbsolutePath -errorAction stop
+    If ($mutex.WaitOne($mutexTimeoutMs))
+    {
+        $updatedContent | Out-File -FilePath $modInfoAbsolutePath -errorAction stop
+    }
+    Else
+    {
+        throw ('Could not acquire {0} Mutex within {1} ms.' -f $mutexName, $mutexTimeoutMs)
+    }
 }
 catch
 {
     Write-Error ('Could not create file {0}: {1}' -f $modInfoAbsolutePath, $_.Exception.Message)
     exit 1
 }
+finally
+{
+    [void]$mutex.ReleaseMutex()
+}
+
+$mutex.Dispose()
 
 Write-Host ('Updating {0}...done.' -f $modInfoAbsolutePath)
