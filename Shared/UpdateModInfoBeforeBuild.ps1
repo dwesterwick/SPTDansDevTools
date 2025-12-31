@@ -14,7 +14,16 @@ $modInfoAbsolutePath = Join-Path $PSScriptRoot $modInfoRelativePath
 Write-Host ('Updating {0}...' -f $modInfoAbsolutePath)
 
 # Read the original file contents
-$originalContent = Get-Content -Path $modInfoAbsolutePath -Raw
+try
+{
+    $originalContent = Get-Content -Path $modInfoAbsolutePath -Raw -errorAction stop
+}
+catch
+{
+    Write-Error ('Could not read file {0}: {1}' -f $modInfoAbsolutePath, $_.Exception.Message)
+    exit 1
+}
+
 $updatedContent = $originalContent
 
 # Update property values
@@ -26,6 +35,14 @@ $updatedContent = $updatedContent.Trim() -replace 'MODVERSION = ".*"' , ('MODVER
 $updatedContent = $updatedContent.Trim() -replace 'SPTVERSIONCOMPATIBILITY = ".*"' , ('SPTVERSIONCOMPATIBILITY = "{0}"' -f $sptVersion)
 
 # Write modified contents back to the file
-$updatedContent | Out-File -FilePath $modInfoAbsolutePath
+try
+{
+    $updatedContent | Out-File -FilePath $modInfoAbsolutePath -errorAction stop
+}
+catch
+{
+    Write-Error ('Could not create file {0}: {1}' -f $modInfoAbsolutePath, $_.Exception.Message)
+    exit 1
+}
 
 Write-Host ('Updating {0}...done.' -f $modInfoAbsolutePath)
