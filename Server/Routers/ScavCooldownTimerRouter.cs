@@ -1,10 +1,8 @@
-﻿using DansDevTools.Helpers;
-using DansDevTools.Routers.Template;
+﻿using DansDevTools.Routers.Internal;
+using DansDevTools.Utils;
 using SPTarkov.DI.Annotations;
-using SPTarkov.Server.Core.Helpers;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common;
-using SPTarkov.Server.Core.Services;
 using SPTarkov.Server.Core.Utils;
 
 namespace DansDevTools.Routers
@@ -14,66 +12,60 @@ namespace DansDevTools.Routers
     {
         private static readonly string[] _routeNames = ["/client/game/start"];
 
-        private DatabaseService _databaseService;
-        private ProfileHelper _profileHelper;
-
-        public ScavCooldownTimerRouter
-        (
-            LoggingUtil logger,
-            ConfigUtil config,
-            JsonUtil jsonUtil,
-            DatabaseService databaseService,
-            ProfileHelper profileHelper
-        ) : base(_routeNames, logger, config, jsonUtil)
+        private ProfileUtil _profileUtil;
+        
+        public ScavCooldownTimerRouter(LoggingUtil logger, ConfigUtil config, JsonUtil jsonUtil, ProfileUtil profileUtil) : base(_routeNames, logger, config, jsonUtil)
         {
-            _databaseService = databaseService;
-            _profileHelper = profileHelper;
+            _profileUtil = profileUtil;
         }
 
-        protected override ValueTask<string?> HandleRoute(string routeName, RouterData routerData)
+        public override ValueTask<string?> HandleRoute(string routeName, RequestData routerData)
         {
-            UpdateScavTimer(routerData.SessionId);
+            CheckAndUpdateScavCooldownTime(routerData.SessionId);
 
             return new ValueTask<string?>(routerData.Output);
         }
 
-        private void UpdateScavTimer(MongoId sessionId)
+        private void CheckAndUpdateScavCooldownTime(MongoId sessionId)
         {
-            PmcData? pmcData = _profileHelper.GetPmcProfile(sessionId);
-            PmcData? scavData = _profileHelper.GetScavProfile(sessionId);
+            PmcData? pmcData = _profileUtil.GetPmcProfile(sessionId);
+            PmcData? scavData = _profileUtil.GetScavProfile(sessionId);
 
-            if (pmcData?.Info == null || scavData?.Info == null)
+            if ((pmcData?.Info == null) || (scavData?.Info == null))
             {
                 Logger.Info("Cannot update Scav timer; Scav profile has not been created yet");
                 return;
             }
 
-            double? cooldownTimeRemaining = scavData.Info.SavageLockTime - pmcData.Info.LastTimePlayedAsSavage;
-
-            double worstCaseCooldownModifier = GetWorstCaseCooldownModifier();
-            double? maxCooldownTime = _databaseService.GetGlobals().Configuration.SavagePlayCooldown * worstCaseCooldownModifier * 1.1;
-
-            if (cooldownTimeRemaining > maxCooldownTime)
+            if (!IsCooldownTimeRemainingTooHigh(pmcData, scavData))
             {
-                Logger.Info($"Resetting Scav cooldown timer for {sessionId}");
-                scavData.Info.SavageLockTime = 0;
+                return;
             }
+
+            double newCooldownTime = _profileUtil.GetMaxScavCooldownTime(pmcData);
+            ChangeScavLockTime(pmcData, scavData, newCooldownTime);
         }
 
-        private double GetWorstCaseCooldownModifier()
+        private bool IsCooldownTimeRemainingTooHigh(PmcData pmcData, PmcData scavData)
         {
-            double worstModifier = 0.01;
+            double maxCooldownTime = _profileUtil.GetMaxScavCooldownTime(pmcData);
+            double? cooldownTimeRemaining = _profileUtil.GetScavCooldownTimeRemaining(scavData);
 
-            Dictionary<double, FenceLevel> fenceLevels = _databaseService.GetGlobals().Configuration.FenceSettings.Levels;
-            foreach (double level in fenceLevels.Keys)
+            if (cooldownTimeRemaining < maxCooldownTime)
             {
-                if (fenceLevels[level].SavageCooldownModifier > worstModifier)
-                {
-                    worstModifier = fenceLevels[level].SavageCooldownModifier;
-                }
+                Logger.Info($"Current Scav cooldown time ({cooldownTimeRemaining} seconds) is below max cooldown time ({maxCooldownTime} seconds)");
+                return false;
             }
 
-            return worstModifier;
+            return true;
+        }
+
+        private void ChangeScavLockTime(PmcData pmcData, PmcData scavData, double newCooldownTime)
+        {
+            scavData.Info!.SavageLockTime = pmcData.Info!.LastTimePlayedAsSavage + newCooldownTime;
+
+            double? cooldownTimeRemaining = _profileUtil.GetScavCooldownTimeRemaining(scavData);
+            Logger.Info($"Reduced Scav cooldown timer to {newCooldownTime} seconds ({cooldownTimeRemaining} remaining)");
         }
     }
 }

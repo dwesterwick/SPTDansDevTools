@@ -1,12 +1,12 @@
-﻿using DansDevTools.Helpers;
+﻿using DansDevTools.Utils;
 using SPTarkov.Server.Core.DI;
 
-namespace DansDevTools.Services.Template;
+namespace DansDevTools.Services.Internal;
 
 public abstract class AbstractService : IOnLoad
 {
-    protected static LoggingUtil Logger { get; private set; } = null!;
-    protected static ConfigUtil Config { get; private set; } = null!;
+    protected LoggingUtil Logger { get; private set; } = null!;
+    protected ConfigUtil Config { get; private set; } = null!;
 
     private static bool _modDisabledMessageLogged = false;
 
@@ -18,9 +18,9 @@ public abstract class AbstractService : IOnLoad
 
     public Task OnLoad()
     {
-        if (Config.CurrentConfig.Enabled)
+        if (Config.IsModEnabled)
         {
-            OnLoadIfEnabled();
+            OnLoadIfModIsEnabled();
         }
         else
         {
@@ -30,7 +30,7 @@ public abstract class AbstractService : IOnLoad
         return Task.CompletedTask;
     }
 
-    protected abstract void OnLoadIfEnabled();
+    protected abstract void OnLoadIfModIsEnabled();
 
     private void LogModDisabledMessage()
     {

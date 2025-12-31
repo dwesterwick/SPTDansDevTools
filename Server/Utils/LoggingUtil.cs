@@ -1,7 +1,7 @@
 ﻿using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Models.Utils;
 
-namespace DansDevTools.Helpers
+namespace DansDevTools.Utils
 {
     [Injectable(InjectionType.Singleton)]
     public class LoggingUtil(ISptLogger<DansDevTools_Server> logger)

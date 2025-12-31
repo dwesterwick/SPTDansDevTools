@@ -1,11 +1,11 @@
 ﻿using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Utils;
 
-namespace DansDevTools.Routers.Template
+namespace DansDevTools.Routers.Internal
 {
-    public struct RouterData
+    public struct RequestData
     {
-        public RouterData(string url, IRequestData info, MongoId sessionId, string? output)
+        public RequestData(string url, IRequestData info, MongoId sessionId, string? output)
         {
             Url = url;
             Info = info;

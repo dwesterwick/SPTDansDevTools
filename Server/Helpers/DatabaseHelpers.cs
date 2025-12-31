@@ -21,7 +21,7 @@ namespace DansDevTools.Helpers
             return databaseService.GetLocations().GetDictionary().Values;
         }
 
-        public static IEnumerable<string> EnumerateLocationNames(this DatabaseService databaseService)
+        public static IEnumerable<string> EnumerateLocationIDs(this DatabaseService databaseService)
         {
             return databaseService.GetLocations().GetDictionary().Keys;
         }

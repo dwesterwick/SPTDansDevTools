@@ -1,5 +1,6 @@
 ﻿using DansDevTools.Helpers;
-using DansDevTools.Services.Template;
+using DansDevTools.Services.Internal;
+using DansDevTools.Utils;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.DI;
 using SPTarkov.Server.Core.Models.Eft.Common;
@@ -16,25 +17,14 @@ public class ModifyDatabaseService : AbstractService
     (
         LoggingUtil logger,
         ConfigUtil config,
-        DatabaseService databaseService,
-        RaidTimeAdjustmentService raidTimeAdjustmentService
+        DatabaseService databaseService
     ) : base(logger, config)
     {
         _databaseService = databaseService;
     }
 
-    protected override void OnLoadIfEnabled()
+    protected override void OnLoadIfModIsEnabled()
     {
-        if (Config.CurrentConfig.FreeLabsAccess)
-        {
-            RemoveLabsRestrictions();
-        }
-
-        if (Config.CurrentConfig.FreeLabyrinthAccess)
-        {
-            RemoveLabyrinthRestrictions();
-        }
-
         SetMinLevelForFlea(Config.CurrentConfig.MinLevelForFlea);
         ResetScavCooldownTime(Config.CurrentConfig.ScavCooldownTime);
 
@@ -49,25 +39,6 @@ public class ModifyDatabaseService : AbstractService
         }
     }
 
-    private void RemoveLabsRestrictions()
-    {
-        Location labsLocation = _databaseService.GetAndVerifyLocation("laboratory");
-        labsLocation.Base.AccessKeys = [];
-        labsLocation.Base.DisabledForScav = false;
-
-        Logger.Info("Removed restrictions for Labs");
-    }
-
-    private void RemoveLabyrinthRestrictions()
-    {
-        Location labsLocation = _databaseService.GetAndVerifyLocation("labyrinth");
-        labsLocation.Base.Enabled = true;
-        labsLocation.Base.AccessKeys = [];
-        labsLocation.Base.DisabledForScav = false;
-
-        Logger.Info("Removed restrictions for Labyrinth");
-    }
-
     private void SetMinLevelForFlea(int level)
     {
         _databaseService.GetGlobals().Configuration.RagFair.MinUserLevel = level;
@@ -77,11 +48,13 @@ public class ModifyDatabaseService : AbstractService
     private void ResetScavCooldownTime(int maxTime)
     {
         int currentCooldownTime = _databaseService.GetGlobals().Configuration.SavagePlayCooldown;
-        if (currentCooldownTime > maxTime)
+        if (currentCooldownTime < maxTime)
         {
-            _databaseService.GetGlobals().Configuration.SavagePlayCooldown = maxTime;
-            Logger.Info($"Reset Scav cooldown time to {maxTime}");
+            return;
         }
+
+        _databaseService.GetGlobals().Configuration.SavagePlayCooldown = maxTime;
+        Logger.Info($"Reset Scav cooldown time to {maxTime}");
     }
 
     private void ForceAirdropsWhenRaidsStart()
@@ -93,7 +66,7 @@ public class ModifyDatabaseService : AbstractService
                 continue;
             }
 
-            AirdropParameter? firstAirdrop = location.Base?.AirdropParameters.First();
+            AirdropParameter? firstAirdrop = location.Base.AirdropParameters.First();
             if (firstAirdrop == null)
             {
                 continue;
@@ -112,7 +85,7 @@ public class ModifyDatabaseService : AbstractService
     {
         foreach (Location location in _databaseService.EnumerateLocations())
         {
-            if ((location.Base == null) || (location.Base.BossLocationSpawn.Count == 0))
+            if (location.Base?.BossLocationSpawn == null)
             {
                 continue;
             }

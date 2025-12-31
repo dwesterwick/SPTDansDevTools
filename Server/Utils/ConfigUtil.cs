@@ -4,14 +4,16 @@ using SPTarkov.Server.Core.Helpers;
 using System.Reflection;
 using System.Runtime.Serialization.Json;
 
-namespace DansDevTools.Helpers
+namespace DansDevTools.Utils
 {
     [Injectable(InjectionType.Singleton)]
     public class ConfigUtil
     {
-        const string FILENAME = "config.json";
+        private const string FILENAME = "config.json";
 
         public ModConfig CurrentConfig { get; private set; }
+
+        public bool IsModEnabled => CurrentConfig.Enabled;
 
         public ConfigUtil(ModHelper modHelper)
         {
@@ -41,7 +43,6 @@ namespace DansDevTools.Helpers
                 stream.Position = 0;
                 DataContractJsonSerializer deserializer = new DataContractJsonSerializer(typeof(ModConfig));
                 object? obj = deserializer.ReadObject(stream);
-
                 if (obj == null)
                 {
                     throw new InvalidOperationException("Could not deserialize config file");
