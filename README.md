@@ -6,6 +6,7 @@
 * Force Scav raids to be full length
 * Force bosses to always spawn
 * Force the first airdrop to occur at the beginning of the raid
+* Force the season to always be summer
 
 **Client Tools:**
 * God mode

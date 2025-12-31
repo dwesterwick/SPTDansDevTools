@@ -6,5 +6,6 @@
 	"min_level_for_flea": 15,
 	"full_length_scav_raids": false,
 	"always_have_airdrops": false,
-	"bosses_always_spawn": false
+	"bosses_always_spawn": false,
+	"season_always_summer":  false
 }

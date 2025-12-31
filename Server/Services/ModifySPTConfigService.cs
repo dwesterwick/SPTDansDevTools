@@ -12,6 +12,7 @@ public class ModifySPTConfigService : AbstractService
 {
     private ConfigServer _configServer;
     private LocationConfig _locationConfig = null!;
+    private WeatherConfig _weatherConfig = null!;
 
     public ModifySPTConfigService(LoggingUtil logger, ConfigUtil config, ConfigServer configServer) : base(logger, config)
     {
@@ -26,11 +27,17 @@ public class ModifySPTConfigService : AbstractService
         {
             ForceFullLengthScavRaids();
         }
+
+        if (Config.CurrentConfig.SeasonAlwaysSummer)
+        {
+            ForceSummer();
+        }
     }
 
     private void GetAllConfigs()
     {
         _locationConfig = _configServer.GetConfig<LocationConfig>();
+        _weatherConfig = _configServer.GetConfig<WeatherConfig>();
     }
 
     private void ForceFullLengthScavRaids()
@@ -46,5 +53,11 @@ public class ModifySPTConfigService : AbstractService
         }
 
         Logger.Info("Forced full-length Scav raids for all locations");
+    }
+
+    private void ForceSummer()
+    {
+        _weatherConfig.OverrideSeason = SPTarkov.Server.Core.Models.Enums.Season.SUMMER;
+        Logger.Info("Forcing summer season");
     }
 }

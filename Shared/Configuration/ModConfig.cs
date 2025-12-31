@@ -28,5 +28,8 @@ namespace DansDevTools.Configuration
 
         [DataMember(Name = "bosses_always_spawn")]
         public bool BossesAlwaysSpawn { get; set; } = false;
+
+        [DataMember(Name = "season_always_summer")]
+        public bool SeasonAlwaysSummer { get; set; } = false;
     }
 }
