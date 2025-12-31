@@ -1,0 +1,10 @@
+<Project>
+	<PropertyGroup>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<AssemblyTitle>DansDevTools</AssemblyTitle>
+		<Authors>DanW</Authors>
+		<Version>1.1.0</Version>
+		<SPTVersion>~4.0.0</SPTVersion>
+		<SPTGUID>com.danw.dansdevtools</SPTGUID>
+	</PropertyGroup>
+</Project>
