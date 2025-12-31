@@ -1,7 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using Comfort.Common;
-using DansDevTools.Helpers;
+using DansDevTools.Utils;
 using DansDevTools.Patches;
 using System;
 using System.Collections.Generic;

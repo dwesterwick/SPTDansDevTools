@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using DansDevTools.Helpers;
+using DansDevTools.Utils;
 using SPT.Reflection.Patching;
 using UnityEngine;
 

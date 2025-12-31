@@ -1,4 +1,4 @@
-﻿namespace DansDevTools.Helpers
+﻿namespace DansDevTools.Utils
 {
     public class LoggingUtil
     {
@@ -7,6 +7,11 @@
         public LoggingUtil(BepInEx.Logging.ManualLogSource logger)
         {
             _logger = logger;
+        }
+
+        public void LogDebug(string message)
+        {
+            _logger.LogDebug(message);
         }
 
         public void LogInfo(string message)

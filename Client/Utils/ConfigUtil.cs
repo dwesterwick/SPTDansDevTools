@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DansDevTools.Helpers;
+using Newtonsoft.Json;
 using SPT.Common.Http;
 using System;
 using System.Collections.Generic;
@@ -6,37 +7,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DansDevTools.Helpers
+namespace DansDevTools.Utils
 {
     public static class ConfigUtil
     {
+        private static Configuration.ModConfig? _currentConfig;
         public static Configuration.ModConfig CurrentConfig
         {
             get
             {
-                if (_config == null)
+                if (_currentConfig == null)
                 {
                     GetConfig();
                 }
 
-                return _config!;
+                return _currentConfig!;
             }
         }
-
-        private static Configuration.ModConfig? _config;
 
         private static void GetConfig()
         {
             string routeName = SharedRouterHelpers.GetRoutePath("GetConfig");
-            string json = RequestHandler.GetJson(routeName);
-            Configuration.ModConfig? config = JsonConvert.DeserializeObject<Configuration.ModConfig>(json);
 
-            if (config == null)
+            string json = RequestHandler.GetJson(routeName);
+            Configuration.ModConfig? configResponse = JsonConvert.DeserializeObject<Configuration.ModConfig>(json);
+            if (configResponse == null)
             {
                 throw new InvalidOperationException("Could not deserialize config file");
             }
 
-            _config = config;
+            _currentConfig = configResponse;
         }
     }
 }
