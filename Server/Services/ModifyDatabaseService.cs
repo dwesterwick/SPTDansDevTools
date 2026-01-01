@@ -8,7 +8,7 @@ using SPTarkov.Server.Core.Services;
 
 namespace DansDevTools.Services;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + DansDevTools_Server.LOAD_ORDER_OFFSET)]
 public class ModifyDatabaseService : AbstractService
 {
     private DatabaseService _databaseService;

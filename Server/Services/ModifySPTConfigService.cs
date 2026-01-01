@@ -7,7 +7,7 @@ using SPTarkov.Server.Core.Servers;
 
 namespace DansDevTools.Services;
 
-[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + 1)]
+[Injectable(TypePriority = OnLoadOrder.PostDBModLoader + DansDevTools_Server.LOAD_ORDER_OFFSET)]
 public class ModifySPTConfigService : AbstractService
 {
     private ConfigServer _configServer;

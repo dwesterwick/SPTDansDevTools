@@ -6,5 +6,6 @@
 		<Version>1.1.0</Version>
 		<SPTVersion>~4.0.0</SPTVersion>
 		<SPTGUID>com.danw.dansdevtools</SPTGUID>
+		<GithubRepoPath>https://github.com/dwesterwick/SPTDansDevTools</GithubRepoPath>
 	</PropertyGroup>
 </Project>

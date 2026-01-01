@@ -1,7 +1,6 @@
-using DansDevTools;
 using System.Reflection;
 
-namespace DansDevTools_Tests.Server;
+namespace DansDevTools.Server;
 
 public class BuildPropertyTests
 {
