@@ -1,31 +1,15 @@
 ﻿using DansDevTools.Utils;
-using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Eft.Common;
 using SPTarkov.Server.Core.Utils;
 
-namespace DansDevTools.Routers.Internal;
-
-public abstract class AbstractStaticRouter : StaticRouter, IRouteHandler
+namespace DansDevTools.Routers.Internal
 {
-    protected static ConfigUtil Config { get; private set; } = null!;
-
-    protected LoggingUtil Logger { get; private set; } = null!;
-    protected JsonUtil JsonUtil { get; private set; } = null!;
-
-    public AbstractStaticRouter(IEnumerable<string> _routeNames, LoggingUtil logger, ConfigUtil config, JsonUtil jsonUtil) : base(jsonUtil, RouteManager.GetRoutes(_routeNames))
+    internal abstract class AbstractStaticRouter : AbstractTypedStaticRouter<EmptyRequestData>
     {
-        if (Config == null)
+        public AbstractStaticRouter(IEnumerable<string> _routeNames, LoggingUtil logger, ConfigUtil config, JsonUtil jsonUtil)
+            : base(_routeNames, logger, config, jsonUtil)
         {
-            Config = config;
+
         }
-
-        Logger = logger;
-        JsonUtil = jsonUtil;
-
-        RouteManager.RegisterRoutes(_routeNames, this);
     }
-
-    public virtual bool ShouldCreateRoutes() => Config.IsModEnabled;
-    public virtual bool ShouldHandleRoutes() => true;
-
-    public abstract ValueTask<string?> HandleRoute(string routeName, RequestData routerData);
 }

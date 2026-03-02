@@ -1,5 +1,6 @@
 {
 	"enabled": false,
+	"debug":  false,
 	"scav_cooldown_time": 1500,
 	"free_labs_access": false,
 	"free_labyrinth_access": false,

@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DansDevTools.Patches
 {
-    public class GodModePatch : ModulePatch
+    internal class GodModePatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {

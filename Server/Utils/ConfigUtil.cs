@@ -1,55 +1,68 @@
 ﻿using DansDevTools.Configuration;
+using DansDevTools.Helpers;
 using SPTarkov.DI.Annotations;
 using SPTarkov.Server.Core.Helpers;
 using System.Reflection;
-using System.Runtime.Serialization.Json;
 
 namespace DansDevTools.Utils
 {
     [Injectable(InjectionType.Singleton)]
     public class ConfigUtil
     {
-        private const string FILENAME = "config.json";
+        private const string FILENAME_CONFIG = "config.json";
 
-        public ModConfig CurrentConfig { get; private set; }
+        protected virtual string ConfigFileDirectory => ServerModDirectory;
 
-        public bool IsModEnabled => CurrentConfig.Enabled;
+        private string _serverModDirectory = null!;
+        public string ServerModDirectory
+        {
+            get
+            {
+                if (_serverModDirectory == null)
+                {
+                    _serverModDirectory = GetServerModDirectory();
+                }
+
+                return _serverModDirectory;
+            }
+        }
+
+        private ModConfig _currentConfig = null!;
+        public ModConfig CurrentConfig
+        {
+            get
+            {
+                if (_currentConfig == null)
+                {
+                    _currentConfig = GetObject<ModConfig>(FILENAME_CONFIG);
+                }
+
+                return _currentConfig;
+            }
+        }
+
+        private ModHelper _modHelper;
 
         public ConfigUtil(ModHelper modHelper)
         {
-            string pathToMod = modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
-            string fileText = File.ReadAllText(Path.Combine(pathToMod, FILENAME));
-            CurrentConfig = Deserialize(fileText);
+            _modHelper = modHelper;
         }
 
-        public static string Serialize(ModConfig config)
+        private string GetServerModDirectory()
         {
-            using (MemoryStream memoryStream = new MemoryStream())
-            using (StreamReader reader = new StreamReader(memoryStream))
-            {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ModConfig));
-                serializer.WriteObject(memoryStream, config);
-                memoryStream.Position = 0;
-                return reader.ReadToEnd();
-            }
+            return _modHelper.GetAbsolutePathToModFolder(Assembly.GetExecutingAssembly());
         }
 
-        public static ModConfig Deserialize(string configFileText)
+        private T GetObject<T>(string filename)
         {
-            using (Stream stream = new MemoryStream())
+            string fileText = File.ReadAllText(Path.Combine(ConfigFileDirectory, filename));
+            T? obj = ConfigHelpers.Deserialize<T>(fileText);
+            if (obj == null)
             {
-                byte[] data = System.Text.Encoding.UTF8.GetBytes(configFileText);
-                stream.Write(data, 0, data.Length);
-                stream.Position = 0;
-                DataContractJsonSerializer deserializer = new DataContractJsonSerializer(typeof(ModConfig));
-                object? obj = deserializer.ReadObject(stream);
-                if (obj == null)
-                {
-                    throw new InvalidOperationException("Could not deserialize config file");
-                }
-
-                return (ModConfig)obj;
+                throw new InvalidOperationException($"Could not deserialize {filename}");
             }
+
+            return obj;
         }
     }
 }

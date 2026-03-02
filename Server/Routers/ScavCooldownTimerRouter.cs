@@ -8,7 +8,7 @@ using SPTarkov.Server.Core.Utils;
 namespace DansDevTools.Routers
 {
     [Injectable]
-    public class ScavCooldownTimerRouter : AbstractStaticRouter
+    internal class ScavCooldownTimerRouter : AbstractStaticRouter
     {
         private static readonly string[] _routeNames = ["/client/game/start"];
 

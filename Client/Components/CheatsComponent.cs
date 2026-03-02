@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DansDevTools.Components
 {
-    public class CheatsComponent : MonoBehaviour
+    internal class CheatsComponent : MonoBehaviour
     {
         private Player mainPlayer = null!;
 

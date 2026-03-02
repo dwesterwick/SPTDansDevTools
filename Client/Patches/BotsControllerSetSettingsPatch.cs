@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DansDevTools.Patches
 {
-    public class BotsControllerSetSettingsPatch : ModulePatch
+    internal class BotsControllerSetSettingsPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
