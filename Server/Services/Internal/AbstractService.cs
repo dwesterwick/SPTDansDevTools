@@ -1,4 +1,5 @@
-﻿using DansDevTools.Utils;
+﻿using DansDevTools.Helpers;
+using DansDevTools.Utils;
 using SPTarkov.Server.Core.DI;
 
 namespace DansDevTools.Services.Internal;
@@ -18,7 +19,7 @@ public abstract class AbstractService : IOnLoad
 
     public Task OnLoad()
     {
-        if (Config.IsModEnabled)
+        if (Config.CurrentConfig.IsModEnabled())
         {
             OnLoadIfModIsEnabled();
         }

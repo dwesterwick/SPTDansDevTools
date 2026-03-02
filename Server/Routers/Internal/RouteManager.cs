@@ -1,43 +1,28 @@
 ﻿using SPTarkov.Server.Core.DI;
+using SPTarkov.Server.Core.Models.Utils;
 
 namespace DansDevTools.Routers.Internal
 {
-    public class RouteManager
+    internal static class RouteManager
     {
-        private static readonly Dictionary<string, RouteInfo> _allRegisteredRoutes = new();
+        private static readonly Dictionary<string, IRouteInfo> _allRegisteredRoutes = new();
 
-        private static RouteManager _instance = null!;
-        public static RouteManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new RouteManager();
-                }
-
-                return _instance;
-            }
-        }
-
-        private RouteManager() { }
-
-        public static void RegisterRoutes(IEnumerable<string> routeNames, IRouteHandler handler)
+        public static void RegisterRoutes<T>(IEnumerable<string> routeNames, IRouteHandler handler) where T : class, IRequestData
         {
             foreach (string routeName in routeNames)
             {
-                RegisterRoute(routeName, handler);
+                RegisterRoute<T>(routeName, handler);
             }
         }
 
-        public static void RegisterRoute(string routeName, IRouteHandler handler)
+        public static void RegisterRoute<T>(string routeName, IRouteHandler handler) where T : class, IRequestData
         {
             if (_allRegisteredRoutes.ContainsKey(routeName))
             {
                 throw new InvalidOperationException($"Route \"{routeName}\" is already registered");
             }
 
-            RouteInfo routeInfo = new RouteInfo(routeName, handler);
+            TypedRouteInfo<T> routeInfo = new TypedRouteInfo<T>(routeName, handler);
             _allRegisteredRoutes.Add(routeName, routeInfo);
         }
 
@@ -57,7 +42,7 @@ namespace DansDevTools.Routers.Internal
 
         public static RouteAction? GetRoute(string routeName)
         {
-            if (!_allRegisteredRoutes.TryGetValue(routeName, out RouteInfo? routeInfo) || routeInfo == null)
+            if (!_allRegisteredRoutes.TryGetValue(routeName, out IRouteInfo? routeInfo) || routeInfo == null)
             {
                 throw new InvalidOperationException($"Cannot retrieve route for \"{routeName}\"");
             }

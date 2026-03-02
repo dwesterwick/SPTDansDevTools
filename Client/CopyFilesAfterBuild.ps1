@@ -1,16 +1,23 @@
 ﻿param (
-    [string]$modName
+    [string]$modName,
+    [string]$configuration,
+    [string]$relPathToSptInstall
 )
 
 Write-Host ('Copying client files for {0}...' -f $modName)
 
 Set-Location $PSScriptRoot
 
-$destinationAbsolute = Join-Path $PSScriptRoot ('..\..\..\BepInEx\plugins\{0}\' -f $modName)
-$clientLibraryAbsolute = Join-Path $PSScriptRoot ('bin\Debug\netstandard2.1\{0}-Client.dll' -f $modName)
+$destinationAbsolute = Join-Path $PSScriptRoot ('{0}..\BepInEx\plugins\{1}\' -f $relPathToSptInstall, $modName)
+$clientLibraryAbsolute = Join-Path $PSScriptRoot ('bin\{0}\netstandard2.1\{1}-Client.dll' -f $configuration, $modName)
 
 try
 {
+    if (!(Test-Path -PathType Container $destinationAbsolute))
+    {
+        New-Item -Path $destinationAbsolute -ItemType Directory
+    }
+
     Copy-Item -Path $clientLibraryAbsolute -Destination $destinationAbsolute -errorAction stop | Out-Null
 }
 catch

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DansDevTools.Utils
 {
-    public static class ConfigUtil
+    internal static class ConfigUtil
     {
         private static Configuration.ModConfig? _currentConfig;
         public static Configuration.ModConfig CurrentConfig

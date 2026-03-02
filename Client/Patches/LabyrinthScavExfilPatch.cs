@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace DansDevTools.Patches
 {
-    public class LabyrinthScavExfilPatch : ModulePatch
+    internal class LabyrinthScavExfilPatch : ModulePatch
     {
         protected override MethodBase GetTargetMethod()
         {
