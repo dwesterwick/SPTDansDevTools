@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DansDevTools
 {
-    [BepInPlugin(ModInfo.GUID, ModInfo.MODNAME, ModInfo.MODVERSION)]
+    [BepInPlugin(ModInfo.GUID, ModInfo.MODNAME, ModInfo.MOD_VERSION)]
     internal class DansDevToolsPlugin : BaseUnityPlugin
     {
         public static ConfigEntry<bool> GodMode = null!;
